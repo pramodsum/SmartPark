@@ -83,12 +83,6 @@ public class ListItemDialog extends DialogFragment {
     	dest = loc;
     }
     
-    void getDirections() {
-    	origin = MainActivity.mLocationClient.getLastLocation();
-    	ParserTask parser = new ParserTask();
-    	parser.execute();
-    }
-    
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
 		MainActivity.dialogtype = "LocationPromptDialog";
@@ -96,12 +90,11 @@ public class ListItemDialog extends DialogFragment {
 	    LayoutInflater inflater = LayoutInflater.from(MainActivity.context);
 	    layout = inflater.inflate(R.layout.expanded_list_item, null);
 		
-		mFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.structure_map);
-		mFragment.setRetainInstance(true);
-		mMap = mFragment.getMap();
-		mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-		mMap.getUiSettings().setZoomControlsEnabled(false);
-		getDirections();
+//		mFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.structure_map);
+//		mFragment.setRetainInstance(true);
+//		mMap = mFragment.getMap();
+//		mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+//		mMap.getUiSettings().setZoomControlsEnabled(false);
 		
 		TextView name = (TextView) layout.findViewById(R.id.structure_name);
 		name.setText(dest.name);
@@ -254,10 +247,8 @@ public class ListItemDialog extends DialogFragment {
 					}
 					
 					ArrayList<LatLng> temp = decodePoly(encoded);
-					for(int j = 0; j < temp.size(); j++) {
-		                listGeopoints.add(temp.get(j));
-		                rectLine.add(temp.get(j));
-					}
+					listGeopoints.addAll(temp);
+					rectLine.addAll(temp);
 
 	                try {
 	                	System.out.println(Html.fromHtml(leg.getString("html_instructions")).toString());
